@@ -70,3 +70,14 @@ app.get("/api/poster/:path", (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`✅ TMDB Proxy Server running on port ${PORT}`));
+
+// Movie Videos (trailers, teasers, clips)
+app.get("/api/movie/:id/videos", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const data = await fetchFromTMDB(`/movie/${id}/videos?language=en-US`);
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch movie videos" });
+  }
+});
